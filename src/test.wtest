@@ -1,0 +1,89 @@
+import spa.*
+import personas.*
+
+test "el spa atiende a todos" {
+    spa.atender(ramiro)
+	spa.atender(olivia)
+	spa.atender(bruno)
+	
+	assert.equals(olivia.gradoDeConcentracion(), 9)
+	assert.equals(bruno.getPeso(), 54.5)
+	assert.that(bruno.getFeliz())
+	assert.equals(ramiro.getContracturado(), 97)
+	assert.notThat(ramiro.getPielGrasosa())
+}
+
+test "ramiro tiene un dia de trabajo" {
+	ramiro.diaDeTrabajo();
+	
+	assert.that(ramiro.getPielGrasosa());
+	assert.equals(ramiro.getContracturado(), 101)
+}
+
+test "bruno tiene un mediodia en su casa" {
+	bruno.mediodiaEnCasa();
+	
+	assert.equals(bruno.getPeso(), 55.25)
+	assert.notThat(bruno.getFeliz())
+	assert.notThat(bruno.getSed())
+}
+
+test "olivia discute" {
+	olivia.discute();
+	
+	assert.equals(olivia.gradoDeConcentracion(), 5)
+}
+
+test "El spa atiende a ramiro" {
+	var contracturaInicial = ramiro.getContracturado()
+	spa.atender(ramiro);
+
+	assert.that(ramiro.getContracturado() < contracturaInicial)
+	assert.notThat(ramiro.getPielGrasosa())
+}
+
+
+test "El spa atiende dos veces seguidas a ramiro" {
+	spa.atender(ramiro);
+	spa.atender(ramiro);
+	
+	assert.equals(ramiro.getContracturado(), 93)
+	assert.notThat(ramiro.getPielGrasosa())
+}
+
+test "Bruno tiene un dia perfecto" {
+	bruno.setSed(false);
+	bruno.setFeliz(true);
+	bruno.setPeso(55);
+	
+	assert.that(bruno.estaPerfecto())
+}
+
+test "Bruno NO tiene un dia perfecto" {
+	//No tiene un dia perfecto por peso excedido
+	bruno.setSed(false);
+	bruno.setFeliz(true);
+	bruno.setPeso(80);
+	
+	assert.notThat(bruno.estaPerfecto())
+	
+	//No tiene un dia perfecto porque tiene sed
+	bruno.setSed(true);
+	bruno.setFeliz(true);
+	bruno.setPeso(55);
+	
+	assert.equals(bruno.estaPerfecto(), false)
+	
+	//No tiene un dia perfecto porque no es feliz
+	bruno.setSed(false);
+	bruno.setFeliz(false);
+	bruno.setPeso(55);
+	
+	assert.notThat(bruno.estaPerfecto())
+}
+
+test "Ramiro juega al paddel" {
+	ramiro.juegaPadel();
+	
+	assert.equals(ramiro.getContracturado(), 102)
+}
